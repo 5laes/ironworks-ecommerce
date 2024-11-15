@@ -1,3 +1,4 @@
+using API.Helpers;
 using Core.Interfaces;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
@@ -10,7 +11,8 @@ internal class Program
 
         // Add services to the container.
         builder.Services.AddControllers();
-        builder.Services.AddScoped<IProductRepository, ProductRepository>();
+        builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+        builder.Services.AddAutoMapper(typeof(MappingProfiles));
         builder.Services.AddDbContext<StoreContext>(x =>
             x.UseSqlite(builder.Configuration.GetConnectionString("Default")));
 
@@ -38,6 +40,8 @@ internal class Program
         }
 
         app.UseHttpsRedirection();
+
+        app.UseStaticFiles();
 
         app.UseAuthorization();
 
