@@ -1,5 +1,6 @@
+using API.Extensions;
 using API.Helpers;
-using Core.Interfaces;
+using API.Middleware;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,10 +12,14 @@ internal class Program
 
         // Add services to the container.
         builder.Services.AddControllers();
-        builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
         builder.Services.AddAutoMapper(typeof(MappingProfiles));
         builder.Services.AddDbContext<StoreContext>(x =>
             x.UseSqlite(builder.Configuration.GetConnectionString("Default")));
+
+        builder.Services.AddApplicationServices();
+        builder.Services.AddSwaggerDocumentation();
+
+
 
         var app = builder.Build();
 
@@ -34,16 +39,13 @@ internal class Program
         }
 
         // Configure the HTTP request pipeline.
-        if (app.Environment.IsDevelopment())
-        {
-            app.UseDeveloperExceptionPage();
-        }
-
+        app.UseMiddleware<ExceptionMiddleware>();
+        app.UseStatusCodePagesWithReExecute("/errors/{0}");
         app.UseHttpsRedirection();
-
         app.UseStaticFiles();
-
         app.UseAuthorization();
+
+        app.UseSwaggerDocumentation();
 
         // Map controllers
         app.MapControllers();
