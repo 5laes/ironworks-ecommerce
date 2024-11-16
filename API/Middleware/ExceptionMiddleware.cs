@@ -4,6 +4,7 @@ using API.Errors;
 
 namespace API.Middleware
 {
+    // This class is to make Exception error messages more consistent with other errors
     public class ExceptionMiddleware
     {
         private readonly RequestDelegate _next;

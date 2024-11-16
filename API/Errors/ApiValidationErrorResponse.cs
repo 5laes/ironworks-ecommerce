@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace API.Errors
 {
+    // Formats validation errors output to be consistent and clear
     public class ApiValidationErrorResponse : ApiResponse
     {
         public ApiValidationErrorResponse() : base(400)

@@ -5,6 +5,7 @@ using Core.Entities;
 
 namespace API.Helpers
 {
+    // Generates correct url for static images
     public class ProductURLResolver : IValueResolver<Product, ProductToReturnDTO, string?>
     {
         private readonly IConfiguration _config;

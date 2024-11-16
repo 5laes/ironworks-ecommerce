@@ -2,6 +2,7 @@ using Microsoft.OpenApi.Models;
 
 namespace API.Extensions
 {
+    // This class is to clean up Program.cs code
     public static class SwaggerServiceExtensions
     {
         public static IServiceCollection AddSwaggerDocumentation(this IServiceCollection services)
