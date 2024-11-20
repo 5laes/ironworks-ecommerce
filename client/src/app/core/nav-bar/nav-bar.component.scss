@@ -26,4 +26,8 @@ a {
 
 .logo {
     cursor: pointer;
+
+    &.focus {
+        outline: none;
+    }
 }
