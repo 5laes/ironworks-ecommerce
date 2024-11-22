@@ -3,6 +3,7 @@ using API.Helpers;
 using API.Middleware;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using StackExchange.Redis;
 
 internal class Program
 {
@@ -15,6 +16,11 @@ internal class Program
         builder.Services.AddAutoMapper(typeof(MappingProfiles));
         builder.Services.AddDbContext<StoreContext>(x =>
             x.UseSqlite(builder.Configuration.GetConnectionString("Default")));
+
+        builder.Services.AddSingleton<IConnectionMultiplexer>(c => {
+            var configuration = ConfigurationOptions.Parse(builder.Configuration.GetConnectionString("Redis")!, true);
+            return ConnectionMultiplexer.Connect(configuration);
+        });
 
         builder.Services.AddApplicationServices();
         builder.Services.AddSwaggerDocumentation();

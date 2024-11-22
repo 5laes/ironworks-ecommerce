@@ -8,7 +8,7 @@ namespace API.Errors
     // Formats exception errors output to be consistent and clear
     public class ApiException : ApiResponse
     {
-        public ApiException(int statusCode, string message = null!, string details = null!) : base(statusCode, message)
+        public ApiException(int statusCode, string message = null, string details = null) : base(statusCode, message)
         {
             Details = details;
         }
