@@ -1,7 +1,10 @@
 using API.Extensions;
 using API.Helpers;
 using API.Middleware;
+using Core.Entities.Identity;
 using Infrastructure.Data;
+using Infrastructure.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using StackExchange.Redis;
 
@@ -17,6 +20,9 @@ internal class Program
         builder.Services.AddDbContext<StoreContext>(x =>
             x.UseSqlite(builder.Configuration.GetConnectionString("Default")));
 
+        builder.Services.AddDbContext<AppIdentityDbContext>(x => 
+            x.UseSqlite(builder.Configuration.GetConnectionString("Identity")));
+
         builder.Services.AddSingleton<IConnectionMultiplexer>(c => {
             var configuration = ConfigurationOptions.Parse(builder.Configuration.GetConnectionString("Redis")!, true);
             return ConnectionMultiplexer.Connect(configuration);
@@ -24,6 +30,7 @@ internal class Program
 
         builder.Services.AddApplicationServices();
         builder.Services.AddSwaggerDocumentation();
+        builder.Services.AddIdentityService(builder.Configuration);
 
 
 
@@ -37,6 +44,11 @@ internal class Program
             var context = services.GetRequiredService<StoreContext>();
             await context.Database.MigrateAsync();
             await StoreContextSeed.SeedAsync(context, loggerFactory);
+
+            var userManager = services.GetRequiredService<UserManager<AppUser>>();
+            var identityContext = services.GetRequiredService<AppIdentityDbContext>();
+            await identityContext.Database.MigrateAsync();
+            await AppIdentityDbContextSeed.SeedUserAsync(userManager);
         }
         catch (Exception ex)
         {
@@ -50,6 +62,7 @@ internal class Program
         app.UseHttpsRedirection();
         app.UseStaticFiles();
         app.UseCors("CorsPolicy");
+        app.UseAuthentication();
         app.UseAuthorization();
 
         app.UseSwaggerDocumentation();
