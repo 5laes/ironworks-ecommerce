@@ -9,7 +9,7 @@ import { environment } from '../../../environments/environment';
 })
 export class TestErrorComponent implements OnInit {
   baseUrl = environment.apiUrl;
-  validationError: any;
+  validationError: string[] = [];
 
   constructor(private http: HttpClient) { }
   
@@ -18,35 +18,33 @@ export class TestErrorComponent implements OnInit {
   }
 
   get404Error() {
-    this.http.get(this.baseUrl + 'products/42').subscribe(response => {
-      console.log(response);
-    }, error => {
-      console.log(error);
+    this.http.get(this.baseUrl + 'products/42').subscribe({
+      next: response => console.log(response),
+      error: error => console.log(error)
     });
   }
 
   get500Error() {
-    this.http.get(this.baseUrl + 'buggy/servererror').subscribe(response => {
-      console.log(response);
-    }, error => {
-      console.log(error);
+    this.http.get(this.baseUrl + 'buggy/servererror').subscribe({
+      next: response => console.log(response),
+      error: error => console.log(error)
     });
   }
 
   get400BadRequestError() {
-    this.http.get(this.baseUrl + 'buggy/badrequest').subscribe(response => {
-      console.log(response);
-    }, error => {
-      console.log(error);
+    this.http.get(this.baseUrl + 'buggy/badrequest').subscribe({
+      next: response => console.log(response),
+      error: error => console.log(error)
     });
   }
 
   get400ValidationError() {
-    this.http.get(this.baseUrl + 'products/fourtytwo').subscribe(response => {
-      console.log(response);
-    }, error => {
-      console.log(error);
-      this.validationError = error.errors;
+    this.http.get(this.baseUrl + 'products/fourtytwo').subscribe({
+      next: response => console.log(response),
+      error: error => {
+        console.log(error);
+        this.validationError = error.errors
+      }
     });
   }
 

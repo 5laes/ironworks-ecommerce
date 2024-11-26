@@ -11,29 +11,27 @@ import { IProduct } from '../shared/models/product';
 export class BasketService {
   baseUrl = environment.apiUrl;
   private basketSource = new BehaviorSubject<IBasket>(null!);
-  private basketTotalSource = new BehaviorSubject<IBasketTotals>(null!);
+  private basketTotalSource = new BehaviorSubject<IBasketTotals | null>(null);
   basket$ = this.basketSource.asObservable();
   basketTotal$ = this.basketTotalSource.asObservable();
 
   constructor(private http: HttpClient) { }
 
   getBasket(id: string) {
-    return this.http.get<IBasket>(this.baseUrl + 'basket?id=' + id)
-      .pipe(
-        map((basket: IBasket) => {
-          this.basketSource.next(basket);
-          this.calculateTotals();
-        }
-      )
-    );
+    return this.http.get<IBasket>(this.baseUrl + 'basket?id=' + id).subscribe({
+      next: basket => {
+        this.basketSource.next(basket);
+        this.calculateTotals();
+      }
+    });
   }
 
   setBasket(basket: IBasket) {
-    return this.http.post<IBasket>(this.baseUrl + 'basket', basket).subscribe((response: IBasket) => {
-      this.basketSource.next(response);
-      this.calculateTotals();
-    }, error => {
-      console.log(error);
+    return this.http.post<IBasket>(this.baseUrl + 'basket', basket).subscribe({
+      next: basket => {
+        this.basketSource.next(basket);
+        this.calculateTotals();
+      }
     });
   }
 
@@ -79,13 +77,17 @@ export class BasketService {
   }
 
   deleteBasket(basket: IBasket) {
-    return this.http.delete(this.baseUrl + 'basket?id=' + basket.id).subscribe(() => {
-      this.basketSource.next(null!);
-      this.basketTotalSource.next(null!);
-      localStorage.removeItem('basket_id');
-    }, error => {
-      console.log(error);
+    return this.http.delete(this.baseUrl + 'basket?id=' + basket.id).subscribe({
+      next: () => {
+        this.deleteLocalBasket();
+      }
     });
+  }
+
+  private deleteLocalBasket() {
+    this.basketSource.next(null!);
+    this.basketTotalSource.next(null!);
+    localStorage.removeItem('basket_id');
   }
 
   private calculateTotals() {
