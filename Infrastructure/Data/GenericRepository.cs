@@ -13,6 +13,7 @@ namespace Infrastructure.Data
             _context = context;
         }
 
+        // These are void because of UnitOfWork
         public void Add(T entity)
         {
             _context.Set<T>().Add(entity);
@@ -23,6 +24,7 @@ namespace Infrastructure.Data
             return await ApplySpecification(spec).CountAsync();
         }
 
+        // These are void because of UnitOfWork
         public void Delete(T entity)
         {
             _context.Set<T>().Remove(entity);
@@ -50,6 +52,7 @@ namespace Infrastructure.Data
             return await ApplySpecification(spec).ToListAsync();
         }
 
+        // These are void because of UnitOfWork
         public void Update(T entity)
         {
             _context.Set<T>().Attach(entity);
