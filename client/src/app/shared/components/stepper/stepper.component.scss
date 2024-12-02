@@ -1,0 +1,15 @@
+button.nav-link {
+    background: #e9ecef;
+    border-radius: 0;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    -ms-border-radius: 0;
+    -o-border-radius: 0;
+    border: none;
+    color: #333;
+
+    &:disabled:not(.active) {
+        color: #333;
+        background: #e9ecef;
+    }
+}
