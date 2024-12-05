@@ -30,7 +30,7 @@ import { OrderDetailedComponent } from './order-detailed/order-detailed.componen
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
-    provideClientHydration(),
+    // provideClientHydration(),
     provideHttpClient(withInterceptorsFromDi(), withFetch())
   ],
   bootstrap: [AppComponent]
