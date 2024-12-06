@@ -13,6 +13,9 @@ export class LoadingInterceptor implements HttpInterceptor {
         if (req.method === 'POST' && req.url.includes('orders')) {
             return next.handle(req);
         }
+        if (req.method === 'DELETE') {
+            return next.handle(req);
+        }
         if (req.url.includes('emailExists')) { // used to skip certain loadings like comparing email when registering
             return next.handle(req);
         }

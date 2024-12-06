@@ -58,14 +58,4 @@ export class ProductDetailsComponent implements OnInit {
       error: error => console.log(error)
     })
   }
-
-  // loadProduct() {
-  //   this.shopService.getProduct(+this.activatedRoot.snapshot.paramMap.get('id')!).subscribe(product => {
-  //     this.product = product;
-  //     this.bcService.set('@productDetails', product.name);
-  //   }, error => {
-  //     console.log(error);
-  //   });
-  // }
-
 }

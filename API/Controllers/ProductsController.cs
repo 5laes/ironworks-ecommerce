@@ -27,6 +27,7 @@ namespace API.Controllers
             _mapper = mapper;
         }
 
+        [Cached(600)] // Homemade attribute
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IReadOnlyList<Pagination<ProductToReturnDTO>>>> GetProducts(
@@ -44,6 +45,7 @@ namespace API.Controllers
                 productParams.PageSize, totalItems, data));
         }
 
+        [Cached(600)]
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
@@ -58,6 +60,7 @@ namespace API.Controllers
             return _mapper.Map<Product, ProductToReturnDTO>(product);
         }
 
+        [Cached(600)]
         [HttpGet("brands")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IReadOnlyList<ProductBrand>>> GetProductBrands()
@@ -65,6 +68,7 @@ namespace API.Controllers
             return Ok(await _productBrandsRepo.GetAllAsync());
         }
 
+        [Cached(600)]
         [HttpGet("types")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IReadOnlyList<ProductType>>> GetProductTypes()
