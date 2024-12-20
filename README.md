@@ -3,8 +3,7 @@
 
 This is a project for me to sharpen my angular skills and learn about implementing payment with cards, user authentication and more.
 
-
-
+A demo site will be published along side [this other project](https://github.com/5laes/dating-app-clone) i am working on when I am done with that, which should not be too long.
 
 ## Features
 
