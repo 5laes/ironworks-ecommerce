@@ -6,3 +6,4 @@ appsettings.json
 *.db-shm
 *.rdb
 .DS_Store
+wwwroot

@@ -65,10 +65,15 @@ internal class Program
         app.UseAuthentication();
         app.UseAuthorization();
 
+        app.UseDefaultFiles();
+        app.UseStaticFiles();
+
         app.UseSwaggerDocumentation();
 
         // Map controllers
         app.MapControllers();
+
+        app.MapFallbackToController("Index", "FallBack");
 
         app.Run();
     }
